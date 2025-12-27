@@ -1,0 +1,81 @@
+QWidget#root {
+    background: #a17ff4;
+    font-family: "Nunito";
+    font-size: 11pt;
+    color: #f6edff;
+}
+
+/* Chat area */
+QFrame#chatFrame {
+    background: #b48bf8;
+    border: 4px solid #c9b2fd;
+    border-radius: 18px;
+    padding: 10px;
+}
+QFrame#chatFrame QPlainTextEdit {
+    background: transparent;
+    border: none;
+    color: #f6edff;
+    font-size: 14px;
+}
+
+/* Input bar */
+QFrame#inputShell {
+    background: #c8abfb;
+    border: 3px solid #c9b2fd;
+    border-radius: 10px;
+}
+QLineEdit#messageInput {
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: #f6edff;
+    letter-spacing: 0.5px;
+}
+
+/* Send bar */
+QFrame#sendShell {
+    background: #c9b2fd;
+    border: 3px solid #c9b2fd;
+    border-radius: 10px;
+    padding: 8px 10px;
+}
+QPushButton#sendButton {
+    background: #c0a5fa;
+    border: 2px solid #e7d6ff;
+    border-radius: 14px;
+    color: #f6edff;
+    font-weight: 700;
+    font-size: 40px;
+    letter-spacing: 2px;
+    padding: 10px 16px;
+}
+QPushButton#sendButton:hover { background: #cbb6fd; }
+QPushButton#sendButton:pressed { background: #bba3f2; }
+
+/* Header and AI card */
+QFrame#titleBar {
+    background: #c9b2fd;
+    border: 3px solid #c9b2fd;
+    border-radius: 14px;
+}
+QFrame#aiCard {
+    background: #b48bf8;
+    border: 4px solid #c9b2fd;
+    border-radius: 16px;
+}
+
+/* Widget bar*/
+QFrame#widgetShell {
+    background: #c9b2fd;
+    border: 3px solid #c9b2fd;
+    border-radius: 10px;
+    padding: 8px 10px;
+}
+
+QTextEdit#history {
+    background: transparent;
+    border: none;
+    font-family: Inter;
+    font-size: 13px;
+}
