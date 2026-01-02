@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QSizePolicy, QGraphicsDropShadowEffect,QFrame, QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QTextEdit, QLineEdit, QLabel
 from PyQt6.QtGui import QPixmap, QColor, QTextCursor
-from PyQt6.QtCore import Qt, QThread, QSize
+from PyQt6.QtCore import Qt, QThread, QSize, QTimer
 from worker import ChatWorker
 import sys
 
@@ -94,6 +94,7 @@ def main():
     ai_layout.setContentsMargins(18, 18, 18, 18)
     ai_card.setGraphicsEffect(build_shadow(36, 0 ,8))
 
+
     ai_wifu = QLabel()
     ai_wifu.setAlignment(Qt.AlignmentFlag.AlignCenter)
     pix = QPixmap("assets/Tinka-ai.png")
@@ -107,6 +108,10 @@ def main():
     widget_layout.setSpacing(0)
     widget_shell.setGraphicsEffect(build_shadow(20, 0 ,5))
 
+    weather_widget = QLabel()
+    weather_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    pix =QPixmap("assets/weather.png")
+    weather_widget.setPixmap(pix.scaled(QSize(200, 200) Qt.aspectRatioMode.KeepAspectRatio, Qt.TransofmrationMode.SmoothTransformation))
 
     ai_layout.addWidget(ai_wifu, 1)
 
@@ -125,7 +130,8 @@ def main():
 
 
     def add_user_message(text):
-        history.append(f"""
+        history.moveCursor(QTextCursor.MoveOperation.End)
+        history.insertHtml(f"""
         <p align="right">
             <span style="
                 font-weight: bold;
@@ -142,10 +148,13 @@ def main():
         </p>
         """)
         history.moveCursor(QTextCursor.MoveOperation.End)
+        history.ensureCursorVisible()
 
 
     def add_ai_message(text):
-        history.append(f"""
+        # Insert the header with empty text
+        history.moveCursor(QTextCursor.MoveOperation.End)
+        history.insertHtml(f"""
         <p align="left">
             <span style="
                 font-weight: bold;
@@ -158,14 +167,29 @@ def main():
                 border-radius: 10px;
                 display: inline-block;
                 max-width: 70%;
-            ">{text}</span>
+            "></span>
         </p>
         """)
         history.moveCursor(QTextCursor.MoveOperation.End)
+        
+        # Typewriter effect
+        index = 0
+        def type_char():
+            nonlocal index
+            if index < len(text):
+                history.moveCursor(QTextCursor.MoveOperation.End)
+                history.insertPlainText(text[index])
+                index += 1
+                QTimer.singleShot(10, type_char)  # 50ms per char
+            else:
+                history.ensureCursorVisible()
+        
+        QTimer.singleShot(100, type_char)
 
 
 
     def handle_send():
+        send_btn.setDisabled(True)
         text = input_box.text().strip()
         if not text:
             return
@@ -200,7 +224,7 @@ def main():
         input_box.clear()
         input_box.setFocus()
 
-
+        send_btn.setEnabled(True)
 
 
     def on_reply(reply):

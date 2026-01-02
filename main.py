@@ -1,12 +1,18 @@
-from together import Together
-import os
 
-client = Together(api_key=os.getenv("TOGETHER_API_KEY"))
+import requests
+
 
 def chat(messages):
-    response = client.chat.completions.create(
-        model="meta-llama/Llama-3.2-3B-Instruct-Turbo",
-        messages=messages,
-        max_tokens=200,
+    response = requests.post(
+        "http://localhost:11434/api/chat",
+        json={
+            "model": "llama3.1:8B",
+            "messages": messages,
+            "stream": False
+        }
+        
     )
-    return response.choices[0].message.content
+    if response.status_code == 200:
+        return response.json()["message"]["content"]
+    else:
+        raise Exception(f"Ollama error: {response.text}")
